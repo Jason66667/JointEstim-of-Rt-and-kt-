@@ -1,6 +1,6 @@
 #######################################################################################################
 ###The function yields number of generations a minor outbreak (R<1) involved before extinction ########
-###assuming the R and k were constant under certain NPI, there is >99% of chance               ########
+###assuming the R and k were constant across generations, there is >99% of chance              ########
 ###a cluster is extinct within xxx generations                                                 ########
 #######################################################################################################
 
