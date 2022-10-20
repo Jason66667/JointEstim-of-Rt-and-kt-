@@ -35,7 +35,7 @@ outbreak_setup <- function(num.initial.cases, IPfn, GIfn, ISOfn, prop.asym) {
   # sample incubation period for new cases
   IP_samples <- IPfn(num.initial.cases)
   exposure_time <- GIfn(num.initial.cases)
-  case_data <- data.table(exposure_time = exposure_time, # Exposure time of 0 for all initial cases
+  case_data <- data.table(exposure_time = exposure_time, 
                           asym = purrr::rbernoulli(num.initial.cases, prop.asym),
                           caseid = 1:(num.initial.cases), # set case id
                           infector = 0,
@@ -77,15 +77,15 @@ outbreak_step <- function(case_data = NULL, disp.iso = NULL,
   # For each case in case_data, draw new_cases from a negative binomial distribution
   # with an R0 and dispersion dependent on if isolated=TRUE
   case_data[, new_cases := purrr::map2_dbl(
-    ifelse(vect_isTRUE(isolated), 1, disp.com),
+    ifelse(vect_isTRUE(isolated), dis.iso, disp.com),
     ifelse(vect_isTRUE(isolated),
-           0,
+           r0isolated,
            r0community),
     ~ rnbinom(1, size = .x, mu = .y))
   ]
   #
   #add additional source
-  case_data.add <- data.table(exposure_time = case_data[generation==max(generation),sample(quantile(exposure_time,c(0.7,0.8,0.9,1)),num.add,replace = T)], # Exposure time of 0 for all initial cases
+  case_data.add <- data.table(exposure_time = case_data[generation==max(generation),sample(quantile(exposure_time,c(0.7,0.8,0.9,1)),num.add,replace = T)], 
                               asym = purrr::rbernoulli(num.add, prop.asym),
                               caseid = (nrow(case_data)+1):(num.add+nrow(case_data)), # set case id
                               infector = 999999,
@@ -113,7 +113,7 @@ outbreak_step <- function(case_data = NULL, disp.iso = NULL,
   
   # If no new cases drawn, outbreak is over so return case_data
   if (total_new_cases == 0) {
-    # If everyone is isolated it means that either control has worked or everyone has had a chance to infect but didn't
+    
     case_data$isolated <- TRUE
     
     case_data[caseid %in% case_data.add$caseid , generation:=max(case_data$generation)+1]
@@ -194,7 +194,7 @@ outbreak_step <- function(case_data = NULL, disp.iso = NULL,
   return(out)
 }
 
-#--incorporating dynamic R and k into the model--#
+#--incorporating dynamic R and k or Epiestim R and fixed k into the model--#
 #R=c()
 #k=c()
 outbreak_model=function(num.initial.cases=NULL,disp.iso = NULL, disp.com = NULL, r0isolated = NULL, r0community = NULL,
@@ -205,8 +205,8 @@ outbreak_model=function(num.initial.cases=NULL,disp.iso = NULL, disp.com = NULL,
                               prop.asym = prop.asym,
                               ISOfn = ISOfn)
   for(i in 1:length(k)){
-    disp.com=k[i]
-    r0community = R[i]
+    disp.com=k[i] #scenario specific
+    r0community = R[i] #scenario specific
     out <- outbreak_step(case_data = case_data,
                          disp.iso = disp.iso,
                          disp.com = disp.com,
