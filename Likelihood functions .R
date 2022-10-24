@@ -1,5 +1,5 @@
 #######################################################################################
-####log likelihood functions of observing different types of clusters followed by      ####         
+####log likelihood functions of observing different types of clusters followed by  ####         
 ####https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004452####
 ####and https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7338915/                      ####
 #######################################################################################
