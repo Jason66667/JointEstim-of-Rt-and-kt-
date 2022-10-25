@@ -7,7 +7,7 @@
 #paramters:
 #R0: reproduction number
 #k: dispersion paramter
-#----#
+#--#
 time_to_extinction=function(R0,k){
   gx=function(R0,k){
     (1+(1-g)*R0/k)^(-k)
