@@ -18,7 +18,7 @@ single_likFun=function(s,j,R0,k){ #here, j is the NUMBER of SECONDARY CASES (joi
 }
 
 #--cluster with unknown numder of generations--#
-Multi_likFun=function(s,j,R0,k){ #here, j is the SIZE of CLUSTER with unknown number of generations initialized by s source cases
+chain_likFun=function(s,j,R0,k){ #here, j is the SIZE of CLUSTER with unknown number of generations initialized by s source cases
   ll=log(s)+lgamma(j-s+k*j)-log(j)-lgamma(j-s+1)-lgamma(k*j)+(j-s)*(log(R0)-log(R0+k))+k*j*(log(k)-log(R0+k))
   return(sum(ll,na.rm=T))
 }
@@ -49,14 +49,14 @@ single_cenFun=function(s,j,R0,k){ #here, j is the NUMBER of SECONDARY CASES (joi
 }
 
 #--cluster with unknown numder of generations--#
-multi_cenFun=function(s,j,R0,k){ #here, j is the SIZE of CLUSTER with unknown number of generations initialized by s source cases
+chain_cenFun=function(s,j,R0,k){ #here, j is the SIZE of CLUSTER with unknown number of generations initialized by s source cases
   if(length(s)==0) return(0)
   censorl=0
   for (i in 1:length(s)){
     l=0
     if(s[i]==0||j[i]-s[i]==0)next
     for (z in s[i]:(j[i]-1)){
-      lli=Multi_likFun(s[i],z,R0,k)
+      lli=chain_likFun(s[i],z,R0,k)
       if(l<lli){
         l=-Inf
         break
