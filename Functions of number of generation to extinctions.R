@@ -1,14 +1,14 @@
-#######################################################################################################
-###The function yields number of generations a minor outbreak (R<1) involved before extinction ########
-###assuming the R and k were constant across generations, there is >99% of chance              ########
-###a cluster is extinct within xxx generations                                                 ########
-#######################################################################################################
+#############################################################################################################
+###The function yields number of generations a minor outbreak (R<1) would involved before extinction     ####
+###assuming the R and k were constant across generations, there is >99% of chance                        ####
+###a cluster is extinct within xxx generations                                                           ####
+#############################################################################################################
 
 #paramters:
 #R0: reproduction number
 #k: dispersion paramter
 #----#
-gen_to_extinction=function(R0,k){
+time_to_extinction=function(R0,k){
   gx=function(R0,k){
     (1+(1-g)*R0/k)^(-k)
   }
@@ -16,14 +16,13 @@ gen_to_extinction=function(R0,k){
   generation=1
   while(g<=1){
     g=gx(R0,k)
-    print(generation)
-    generation=generation+1
     if (g>0.99) {
+      return(generation)
       break
-    }  
+    }
+    generation=generation+1
   }
 }
-time_to_extinction(0.9,0.1)
 
 #--functions to generate Fig. S3--#
 R0 = seq(0.5,0.95,length.out=700)
@@ -32,7 +31,7 @@ P = matrix(NA,nrow=length(R0),ncol=length(k))
 #-#
 for(i in 1:length(R0)) {
   for(j in 1:length(k)) {
-    P[i,j] = gen_to_extinction(R0[i],k[j])
+    P[i,j] = time_to_extinction(R0[i],k[j])
   }
 }
 #-#
