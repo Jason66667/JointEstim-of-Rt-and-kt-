@@ -5,7 +5,7 @@
 library(purrr)
 library(data.table)
 library(dplyr)
-#paramters:
+#parameters:
 #num.initial.cases: number of initial cases of each outbreak
 #IPfn: assumed incubation period distribution estimated from https://www.sciencedirect.com/science/article/pii/S1755436521000359
 #GIfn: assumed generation interval distribution estimated from https://www.sciencedirect.com/science/article/pii/S1755436521000359
@@ -17,7 +17,7 @@ library(dplyr)
 #disp.community: time-varying or fixed dispersion parameter for non-isolated cases 
 #prop.ascertain: effectiveness of contact tracing and is assumed to be 0
 #num.add: number of additional source cases added in each generation
-#quarantine: irrelevant paramters from the original models
+#quarantine: irrelevant parameters from the original models
 #CC_speed: speed of contact tracing (days), which had no effect on the model output in our siumulation scenarios
 dist_setup <- function(dist_shape = NULL, dist_rate = NULL) {
   out <- purrr::partial(rgamma,
@@ -25,7 +25,7 @@ dist_setup <- function(dist_shape = NULL, dist_rate = NULL) {
                         rate = dist_rate)
   return(out)
 }
-#--functions to genrate sample of certain distributions distributions--#
+#--functions to genrate sample of certain distributions--#
 GIfn <- dist_setup(dist_shape = 6.7^2/1.8^2,dist_rate =6.7/1.8^2)
 IPfn <- dist_setup(dist_shape = 6.8^2/4.1^2,dist_rate =6.8/4.1^2)
 ISOfn <- function(n,mean=3.9,sd=3.7){rnorm(n,mean=mean,sd=sd)}
@@ -223,7 +223,7 @@ outbreak_model=function(num.initial.cases=NULL,disp.iso = NULL, disp.com = NULL,
   case_data$total_cases=nrow(case_data)
   return(case_data)
 }
-#--run 50 simulations--#
+#--run--#
 res=purrr::map(.x = 1:50, ~ outbreak_model(num.initial.cases = 5,
                                             disp.iso = 1,
                                             disp.com = NULL,
