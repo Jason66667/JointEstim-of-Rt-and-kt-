@@ -35,12 +35,11 @@ for(i in 1:length(R0)) {
   }
 }
 #-#
-l = c(1,2,5,10,13,22,32,43)
 l.label = c(1,2,5,9,15,21,27,33,39)
 #-#
 image(R0,k,P,xlab=bquote("Reproduction number" ~ italic("R")),
       ylab=bquote("Dispersion parameter" ~ italic("k")),yaxt="n",
-      log="y",col=hcl.colors(length(l)-1, "Heat 2", rev = TRUE),ylim = c(min(k),max(k)))
+      log="y",col=hcl.colors(length(l.label)-1, "Heat 2", rev = TRUE),ylim = c(min(k),max(k)))
 contour(R0,k,P,levels=l.label,labcex=1.6,add=TRUE,size=0.9,lty="dashed")
 axis(2,at=c(0.01,0.1,1,10),labels=c("0.01","0.1","1","10") ,las=2)
 #-#
